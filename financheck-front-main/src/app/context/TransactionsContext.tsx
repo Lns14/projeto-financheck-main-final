@@ -66,8 +66,15 @@ function numberFrom(value: unknown) {
 
 function normalizeTransaction(transaction: any): Transaction {
   const rawDate = transaction.data || transaction.date || transaction.createdAt || new Date().toISOString();
-  const parsedDate = new Date(rawDate);
-  const validDate = Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
+  // Para strings no formato YYYY-MM-DD, parsear localmente para evitar off-by-one de timezone
+  let validDate: Date;
+  if (typeof rawDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(rawDate)) {
+    const [y, m, d] = rawDate.split('-').map(Number);
+    validDate = new Date(y, m - 1, d);
+  } else {
+    const parsedDate = new Date(rawDate);
+    validDate = Number.isNaN(parsedDate.getTime()) ? new Date() : parsedDate;
+  }
   const category = transaction.categoria?.nome || transaction.categoria || transaction.category || 'Outra';
 
   // valor armazenado no banco é sempre positivo; o tipo indica se é receita ou despesa
