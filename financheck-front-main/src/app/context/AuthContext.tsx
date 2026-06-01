@@ -121,7 +121,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (payload: AuthUser) => {
     persistUser(payload);
-    setSelectedProfile(null);
+
+    // Sem controle familiar: seleciona o primeiro perfil automaticamente
+    if (!payload.controleFamiliar && payload.perfis && payload.perfis.length > 0) {
+      setSelectedProfile(payload.perfis[0]);
+    } else {
+      setSelectedProfile(null);
+    }
   };
 
   const logout = () => {
