@@ -1,7 +1,6 @@
 import { Header } from '../components/ui/Header';
 import { BalanceCard } from '../components/ui/BalanceCard';
 import { TransactionsList } from '../components/ui/TransactionsList';
-import { GoalsGrid } from '../components/ui/GoalsGrid';
 import { useTransactions } from '../context/TransactionsContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -40,7 +39,6 @@ export function Dashboard() {
         </div>
 
         <TransactionsList />
-        <GoalsGrid />
       </main>
     </>
   );
